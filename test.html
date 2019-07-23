@@ -8,18 +8,28 @@
     <title>Document</title>
 </head>
 
-<body style="height: 100%; display: flex;align-items: center;justify-content: center">
-    <textarea name="" id="input" cols="30" rows="10">++++++[>++++++++++<-]>+++++.</textarea>
+<body style="height: 100%">
+    <textarea name="" id="input" cols="120" rows="20">++++++[>++++++++++<-]>+++++.</textarea>
     <br>
-    <button onClick="memory=[]; pointer=0; console.log(memory); code = (new DOMParser).parseFromString('<!doctype html><body>' + document.getElementById('input').innerHTML, 'text/html').body.textContent; out.innerHTML = '';eval(code)">Compile</button>
+    <br>
+    <button onClick="compile()">Compile</button>
+    <br>
     <br>
     <p id="output" style="width: 70%; border: solid; height:70%; overflow: auto; padding: 5px">
     </p>
     <script>
-        let memory = []
-        let pointer = 0
-        let code = (new DOMParser).parseFromString('<!doctype html><body>' + document.getElementById('input').innerHTML, 'text/html').body.textContent
-        let out = document.getElementById('output')
+        let memory
+        let pointer
+        let out
+        function compile(){
+            //alert((new DOMParser).parseFromString('<!doctype html><body>' + document.getElementById('input').innerHTML, 'text/html').body.textContent)
+            memory = []
+            pointer = 0
+            out = document.getElementById('output')
+            out.innerHTML = ''
+            eval(document.getElementById('input').value)
+        }
+
         function eval(input) {
             for (let char in input) {
                 switch (input[char]) {
