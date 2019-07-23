@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body style="height: 100%; display: flex;align-items: center;justify-content: center">
+    <textarea name="" id="input" cols="30" rows="10">++++++[>++++++++++<-]>+++++.</textarea>
+    <br>
+    <button onClick="memory=[]; pointer=0; console.log(memory); code = (new DOMParser).parseFromString('<!doctype html><body>' + document.getElementById('input').innerHTML, 'text/html').body.textContent; out.innerHTML = '';eval(code)">Compile</button>
+    <br>
+    <p id="output" style="width: 70%; border: solid; height:70%; overflow: auto; padding: 5px">
+    </p>
+    <script>
+        let memory = []
+        let pointer = 0
+        let code = (new DOMParser).parseFromString('<!doctype html><body>' + document.getElementById('input').innerHTML, 'text/html').body.textContent
+        let out = document.getElementById('output')
+        function eval(input) {
+            for (let char in input) {
+                switch (input[char]) {
+                    case '+':
+                        if (memory[pointer] == null) memory[pointer] = 0
+                        memory[pointer] += 1
+                        break
+                    case '-':
+                        if (memory[pointer] == null) memory[pointer] = 0
+                        if (memory[pointer] > 0) memory[pointer] -= 1
+                        break
+                    case '.':
+                        out.innerHTML = out.innerHTML + String.fromCharCode(memory[pointer])
+                        break
+                    case '>':
+                        pointer += 1
+                        break
+                    case '<':
+                        if (pointer > 0) pointer -= 1
+                        break
+                    case '[':
+                        loopContent = ""
+                        for (c of input.substring(parseInt(char) + 1, input.length)) {
+                            if (c == ']') break
+                            loopContent += c
+                        }
+                        while (memory[pointer] > 1) {
+                            eval(loopContent)
+                        }
+                        break
+                    case ',':
+                        memory[pointer] = parseInt(prompt('test'))
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
